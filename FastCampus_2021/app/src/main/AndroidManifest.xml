@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.fastcampus">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <application
+        android:name=".MasterApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".YoutubeItemActivity"
+            android:screenOrientation="landscape"
+            android:exported="true" />
+        <activity
+            android:name=".Intent_One"
+            android:exported="false" />
+        <activity
+            android:name=".ToDoWriteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InstaSplashActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InstaChangeProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InstaMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InstaLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ToDoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".YoutubeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".TestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InstaJoinActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MelonDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MelonActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RetrofitActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NetworkActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RoomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PermissionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TablayoutPagerSimpleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TablayoutPagerNewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TablayoutPagerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SharedPreferenceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RecyclerViewHomework"
+            android:exported="false" />
+        <activity
+            android:name=".ListViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PhoneBookDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PhoneBookActivity"
+            android:exported="true" />
+        <activity
+            android:name=".RecyclerViewActivity"
+            android:exported="true" />
+        <activity
+            android:name=".GlideActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ResourceActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ApplicationActivityTwo"
+            android:exported="false" />
+        <activity
+            android:name=".ApplicationActivityOne"
+            android:exported="true" />
+        <activity
+            android:name=".AsyncActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ThreadActivity"
+            android:exported="true" />
+        <activity
+            android:name=".FragmentActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AddViewActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="*"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ActivityThree"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityTwo"
+            android:exported="false" />
+        <activity
+            android:name=".Intent_Two"
+            android:exported="false" />
+        <activity
+            android:name=".Homework_2"
+            android:exported="false" />
+        <activity
+            android:name=".Homework_1"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity_01"
+            android:exported="false" />
+        <activity
+            android:name=".ViewControl_02"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityOne"
+            android:exported="true" />
+    </application>
+
+</manifest>
