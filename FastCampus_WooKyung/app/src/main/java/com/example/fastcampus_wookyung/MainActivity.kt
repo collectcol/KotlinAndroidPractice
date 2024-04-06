@@ -8,12 +8,13 @@ import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewcontrol02Button: Button
-    private lateinit var calculatorButton : Button
+    private lateinit var calculatorButton: Button
+    private lateinit var intentButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var intent : Intent
+        var intent: Intent
         viewcontrol02Button = findViewById(R.id.viewControl02)
         viewcontrol02Button.setOnClickListener {
             intent = Intent(this, ViewControl_02::class.java)
@@ -23,6 +24,12 @@ class MainActivity : AppCompatActivity() {
         calculatorButton = findViewById(R.id.calculatorbtn)
         calculatorButton.setOnClickListener {
             intent = Intent(this, Calculator::class.java)
+            startActivity(intent)
+        }
+
+        intentButton = findViewById(R.id.intent)
+        intentButton.setOnClickListener {
+            intent = Intent(this, Intent_One::class.java)
             startActivity(intent)
         }
     }

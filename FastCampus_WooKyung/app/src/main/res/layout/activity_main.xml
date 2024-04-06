@@ -16,5 +16,10 @@
         android:layout_height="wrap_content"
         android:text="계산기 만든 화면"
         android:id="@+id/calculatorbtn"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Intent"
+        android:id="@+id/intent"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
