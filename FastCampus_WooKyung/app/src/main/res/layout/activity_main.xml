@@ -4,22 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/viewControl02"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ViewControl02"/>
+        android:text="ViewControl02" />
+
     <Button
+        android:id="@+id/calculatorbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="계산기 만든 화면"
-        android:id="@+id/calculatorbtn"/>
+        android:text="계산기 만든 화면" />
+
     <Button
+        android:id="@+id/intent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Intent"
-        android:id="@+id/intent"/>
+        android:text="Intent" />
+
+    <Button
+        android:id="@+id/stack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Activity-Stack" />
+
+    <Button
+        android:id="@+id/webview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WebViewLoad" />
+
+    <Button
+        android:id="@+id/fragmentActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FragmentActivity" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

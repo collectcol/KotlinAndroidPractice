@@ -126,6 +126,7 @@ class Intent_One : AppCompatActivity() {
         // - 인텐트를 이용해서 이미지를 전달한다
         // ...
         // ... intent 활용법이 엄청 많다
+
     }
 
     // 결과를 받는 부분
