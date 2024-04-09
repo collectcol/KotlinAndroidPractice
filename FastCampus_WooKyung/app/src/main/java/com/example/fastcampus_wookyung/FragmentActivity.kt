@@ -38,7 +38,8 @@ class FragmentActivity : AppCompatActivity() {
             bundle.putString("key", "hello")
             fragmentFirst.arguments = bundle
 
-            transaction.replace(R.id.root, fragmentFirst)
+            // 다음에 찾기 위해서 태그를 추가 해준다.
+            transaction.replace(R.id.root, fragmentFirst, "fragment_first_tag")
             transaction.commit()
 
         }
@@ -56,6 +57,9 @@ class FragmentActivity : AppCompatActivity() {
             fragmentFirst.printTestLog()
 
             // XML에 없는 fragment를 찾는 방법
+            // 만약 fragment를 생성하지 않았다면 오류가 발생할 수 있다 (null-pointException)
+            val fragmentFirst2 = supportFragmentManager.findFragmentByTag("fragment_first_tag") as FragmentFirst
+            fragmentFirst2.printTestLog()
         }
     }
 

@@ -49,6 +49,14 @@ class MainActivity : AppCompatActivity() {
         (findViewById<Button>(R.id.fragmentActivity)).setOnClickListener {
             startActivity(Intent(this@MainActivity, FragmentActivity::class.java))
         }
+
+        (findViewById<Button>(R.id.asyncActivity)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, AsyncActivity::class.java))
+        }
+        (findViewById<Button>(R.id.applicationContext)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, ApplicationActivityOne::class.java))
+        }
+
     }
 }
 

@@ -44,4 +44,16 @@
         android:layout_height="wrap_content"
         android:text="FragmentActivity" />
 
+    <Button
+        android:id="@+id/asyncActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Async" />
+
+    <Button
+        android:id="@+id/applicationContext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ApplicationContext" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>
