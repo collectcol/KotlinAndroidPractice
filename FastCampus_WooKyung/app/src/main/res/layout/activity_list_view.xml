@@ -5,23 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ApplicationActivityOne">
+    tools:context=".ListViewActivity">
 
     <TextView
-        android:id="@+id/changeActivity"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:text="change_activity"
+        android:background="@drawable/round_button2"
         android:gravity="center"
-        android:textSize="40dp"/>
+        android:text="자동차 추가"
+        android:id="@+id/addCar"/>
 
-    <TextView
-        android:id="@+id/testMethod"
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:text="testMethod"
-        android:gravity="center"
-        android:textSize="40dp"/>
-
+        android:layout_height="match_parent"
+        android:id="@+id/listView"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

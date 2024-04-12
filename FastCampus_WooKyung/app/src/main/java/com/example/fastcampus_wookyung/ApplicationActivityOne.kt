@@ -13,5 +13,13 @@ class ApplicationActivityOne : AppCompatActivity() {
         findViewById<TextView>(R.id.changeActivity).setOnClickListener {
             startActivity(Intent(this, ApplicationActivityTwo::class.java))
         }
+
+        findViewById<TextView>(R.id.testMethod).setOnClickListener {
+            startActivity(Intent(this, ApplicationActivityTwo::class.java))
+
+            // Application Context에 접근해서 함수 호출하기
+            (applicationContext as MasterApplication).methodFromApplication()
+            (applicationContext as MasterApplication).userId
+        }
     }
 }

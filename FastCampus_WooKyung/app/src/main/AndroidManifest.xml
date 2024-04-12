@@ -17,6 +17,30 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".RecyclerViewActivity_Test"
+            android:exported="false" />
+        <activity
+            android:name=".ListViewActivity_Test"
+            android:exported="false" />
+        <activity
+            android:name=".AddviewActivity_Test"
+            android:exported="false" />
+        <activity
+            android:name=".RecyclerViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GlideActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ResourceActivity"
+            android:exported="false" />
+        <activity
             android:name=".ApplicationActivityTwo"
             android:exported="false" />
         <activity

@@ -4,24 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ApplicationActivityOne">
+    tools:context=".ResourceActivity">
 
     <TextView
-        android:id="@+id/changeActivity"
+        android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:text="change_activity"
+        android:layout_height="200dp"
         android:gravity="center"
-        android:textSize="40dp"/>
-
-    <TextView
-        android:id="@+id/testMethod"
+        android:text="안녕하세요"
+        android:background="#FFEB3B"
+        android:textSize="40dp" />
+    
+    <ImageView
+        android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:text="testMethod"
-        android:gravity="center"
-        android:textSize="40dp"/>
-
+        android:layout_height="200dp"
+        android:background="@drawable/dog_image"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

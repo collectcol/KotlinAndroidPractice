@@ -56,7 +56,24 @@ class MainActivity : AppCompatActivity() {
         (findViewById<Button>(R.id.applicationContext)).setOnClickListener {
             startActivity(Intent(this@MainActivity, ApplicationActivityOne::class.java))
         }
-
+        (findViewById<Button>(R.id.resource)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, ResourceActivity::class.java))
+        }
+        (findViewById<Button>(R.id.addview)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, AddviewActivity::class.java))
+        }
+        (findViewById<Button>(R.id.addview_test)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, AddviewActivity_Test::class.java))
+        }
+        (findViewById<Button>(R.id.listView)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, ListViewActivity::class.java))
+        }
+        (findViewById<Button>(R.id.listView_test)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, ListViewActivity_Test::class.java))
+        }
+        (findViewById<Button>(R.id.recyclerView)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, RecyclerViewActivity::class.java))
+        }
     }
 }
 

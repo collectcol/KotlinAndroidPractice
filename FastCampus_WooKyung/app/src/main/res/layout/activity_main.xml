@@ -8,52 +8,106 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/viewControl02"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ViewControl02" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/calculatorbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="계산기 만든 화면" />
 
-    <Button
-        android:id="@+id/intent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Intent" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/stack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Activity-Stack" />
+            <Button
+                android:id="@+id/viewControl02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ViewControl02" />
 
-    <Button
-        android:id="@+id/webview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="WebViewLoad" />
+            <Button
+                android:id="@+id/calculatorbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="계산기 만든 화면" />
 
-    <Button
-        android:id="@+id/fragmentActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="FragmentActivity" />
+            <Button
+                android:id="@+id/intent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Intent" />
 
-    <Button
-        android:id="@+id/asyncActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Async" />
+            <Button
+                android:id="@+id/stack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Activity-Stack" />
 
-    <Button
-        android:id="@+id/applicationContext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ApplicationContext" />
+            <Button
+                android:id="@+id/webview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WebViewLoad" />
 
+            <Button
+                android:id="@+id/fragmentActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FragmentActivity" />
+
+            <Button
+                android:id="@+id/asyncActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Async" />
+
+            <Button
+                android:id="@+id/applicationContext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ApplicationContext" />
+
+            <Button
+                android:id="@+id/resource"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resource" />
+
+            <Button
+                android:id="@+id/addview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AddView" />
+
+            <Button
+                android:id="@+id/addview_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AddView_Test" />
+
+            <Button
+                android:id="@+id/listView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ListView" />
+
+            <Button
+                android:id="@+id/listView_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ListView_Test" />
+
+            <Button
+                android:id="@+id/recyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RecyclerView" />
+            <Button
+                android:id="@+id/recyclerView_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RecyclerView_Test" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>
