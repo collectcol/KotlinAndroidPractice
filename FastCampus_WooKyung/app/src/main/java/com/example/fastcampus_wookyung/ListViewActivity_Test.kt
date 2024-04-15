@@ -25,17 +25,31 @@ class ListViewActivity_Test : AppCompatActivity() {
         chatList.add(ChatInfo("홍길동", "어 저도 7시까지에요", "이순신", "그렇구나"))
         chatList.add(ChatInfo("홍길동", "네", "이순신", "안녕히 가세요"))
 
-        val adapter = ChatAdapter(
+        var adapter = ChatAdpater(
             chatList,
             LayoutInflater.from(this@ListViewActivity_Test)
         )
-
-        val listView = findViewById<ListView>(R.id.listView)
+        var listView = findViewById<ListView>(R.id.listView)
         listView.adapter = adapter
+
+        // 리스너 장착 방법
+        listView.setOnItemClickListener { parent, view, position, id ->
+            var chatInfo = adapter.chatList[position]
+            var a = chatInfo.userName1
+            var b = chatInfo.message1
+        }
+
+        // 데이터 갱신 방법
+        findViewById<TextView>(R.id.addlist).setOnClickListener {
+            adapter.chatList.add(
+                ChatInfo("홍길동", "네", "이순신", "안녕히 가세요")
+            )
+            adapter.notifyDataSetChanged() // 얘만 호출하면 갱신해준다
+        }
     }
 }
 
-class ChatAdapter(
+class ChatAdpater(
     val chatList: MutableList<ChatInfo>,
     val layoutInflater: LayoutInflater
 ) : BaseAdapter(){
@@ -52,12 +66,12 @@ class ChatAdapter(
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view : View
-        val holder : ChatViewHolder
+        val view: View
+        val holder: ChatListHolder
 
         if(convertView == null){
             view = layoutInflater.inflate(R.layout.chat_item1, null)
-            holder = ChatViewHolder()
+            holder = ChatListHolder()
             holder.userName1 = view.findViewById(R.id.userName1)
             holder.message1 = view.findViewById(R.id.message1)
             holder.userName2 = view.findViewById(R.id.userName2)
@@ -65,26 +79,24 @@ class ChatAdapter(
 
             view.tag = holder
         }else {
+            holder = convertView.tag as ChatListHolder
             view = convertView
-            holder = convertView as ChatViewHolder
         }
-        holder.userName1?.text = null
-        holder.message1?.text = null
-        holder.userName2?.text = null
-        holder.message2?.text = null
+        var chatInfo = chatList[position]
 
-        holder.userName1?.text = chatList[position].userName1
-        holder.message1?.text = chatList[position].message1
-        holder.userName2?.text = chatList[position].userName2
-        holder.message2?.text = chatList[position].message2
+        holder.userName1?.text = chatInfo.userName1
+        holder.message1?.text = chatInfo.message1
+        holder.userName2?.text = chatInfo.userName2
+        holder.message2?.text = chatInfo.message2
 
         return view
     }
+
 }
 
-class ChatViewHolder(
+class ChatListHolder(
     var userName1: TextView? = null,
-    var message1: TextView? = null,
+    var message1 : TextView? = null,
     var userName2: TextView? = null,
-    var message2: TextView? = null
+    var message2 : TextView? = null
 )

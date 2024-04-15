@@ -74,6 +74,9 @@ class MainActivity : AppCompatActivity() {
         (findViewById<Button>(R.id.recyclerView)).setOnClickListener {
             startActivity(Intent(this@MainActivity, RecyclerViewActivity::class.java))
         }
+        (findViewById<Button>(R.id.recyclerView_test)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, RecyclerViewActivity_Test::class.java))
+        }
     }
 }
 
