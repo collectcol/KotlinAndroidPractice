@@ -5,15 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".RecyclerViewActivity">
+    tools:context=".MainActivity">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button"/>
+        android:text="추가버튼"
+        android:id="@+id/addButton"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/recyclerView_test"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/recyclerView"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

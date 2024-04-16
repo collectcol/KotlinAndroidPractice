@@ -77,6 +77,9 @@ class MainActivity : AppCompatActivity() {
         (findViewById<Button>(R.id.recyclerView_test)).setOnClickListener {
             startActivity(Intent(this@MainActivity, RecyclerViewActivity_Test::class.java))
         }
+        (findViewById<Button>(R.id.tablaoutpager)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, TablayoutPagerActivity::class.java))
+        }
     }
 }
 
