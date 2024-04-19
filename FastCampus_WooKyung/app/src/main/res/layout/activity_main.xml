@@ -112,6 +112,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TablayoutPager" />
+            <Button
+                android:id="@+id/tablaoutpager2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TablayoutPager2" />
+            <Button
+                android:id="@+id/tablaoutpagerSimple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TablayoutPagerSimple" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>

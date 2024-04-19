@@ -80,6 +80,12 @@ class MainActivity : AppCompatActivity() {
         (findViewById<Button>(R.id.tablaoutpager)).setOnClickListener {
             startActivity(Intent(this@MainActivity, TablayoutPagerActivity::class.java))
         }
+        (findViewById<Button>(R.id.tablaoutpager2)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, TablayoutPagerNewActivity::class.java))
+        }
+        (findViewById<Button>(R.id.tablaoutpagerSimple)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, TablayoutPagerSimpleActivity::class.java))
+        }
     }
 }
 
