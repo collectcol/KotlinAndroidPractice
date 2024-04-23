@@ -123,6 +123,18 @@
                 android:layout_height="wrap_content"
                 android:text="TablayoutPagerSimple" />
 
+            <Button
+                android:id="@+id/sharedPreprence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SharedPreprence" />
+
+            <Button
+                android:id="@+id/room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Room" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

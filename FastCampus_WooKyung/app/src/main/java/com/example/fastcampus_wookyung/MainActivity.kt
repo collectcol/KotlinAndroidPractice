@@ -86,6 +86,12 @@ class MainActivity : AppCompatActivity() {
         (findViewById<Button>(R.id.tablaoutpagerSimple)).setOnClickListener {
             startActivity(Intent(this@MainActivity, TablayoutPagerSimpleActivity::class.java))
         }
+        (findViewById<Button>(R.id.sharedPreprence)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, SharedPreferenceActivity::class.java))
+        }
+        (findViewById<Button>(R.id.room)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, RoomActivity::class.java))
+        }
     }
 }
 

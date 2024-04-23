@@ -17,6 +17,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".RoomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SharedPreferenceActivity"
+            android:exported="false" />
+        <activity
             android:name=".TablayoutPagerSimpleActivity"
             android:exported="false" />
         <activity
