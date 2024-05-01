@@ -92,6 +92,9 @@ class MainActivity : AppCompatActivity() {
         (findViewById<Button>(R.id.room)).setOnClickListener {
             startActivity(Intent(this@MainActivity, RoomActivity::class.java))
         }
+        (findViewById<Button>(R.id.network)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, NetworkActivity::class.java))
+        }
     }
 }
 
