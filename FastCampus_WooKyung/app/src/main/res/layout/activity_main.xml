@@ -141,6 +141,12 @@
                 android:layout_height="wrap_content"
                 android:text="Network" />
 
+            <Button
+                android:id="@+id/retrofit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Retrofit" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

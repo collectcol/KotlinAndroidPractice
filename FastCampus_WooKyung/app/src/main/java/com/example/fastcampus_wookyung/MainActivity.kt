@@ -95,6 +95,9 @@ class MainActivity : AppCompatActivity() {
         (findViewById<Button>(R.id.network)).setOnClickListener {
             startActivity(Intent(this@MainActivity, NetworkActivity::class.java))
         }
+        (findViewById<Button>(R.id.retrofit)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, RetrofitService::class.java))
+        }
     }
 }
 
