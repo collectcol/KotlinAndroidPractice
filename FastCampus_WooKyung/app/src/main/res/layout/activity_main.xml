@@ -147,6 +147,12 @@
                 android:layout_height="wrap_content"
                 android:text="Retrofit" />
 
+            <Button
+                android:id="@+id/permission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Permission" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

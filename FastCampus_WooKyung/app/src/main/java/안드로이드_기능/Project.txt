@@ -1,0 +1,9 @@
+Project
+- 간단한 프로젝트
+    - Youtube
+    - Melon
+- 복잡한 프로젝트
+    - instagram
+    - Todo
+        - 가입, 로그인 절차는 생략
+        - 토큰은 instagram에서 받은 걸로 진행한다

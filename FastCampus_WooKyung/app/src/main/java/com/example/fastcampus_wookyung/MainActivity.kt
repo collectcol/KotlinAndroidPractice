@@ -98,6 +98,9 @@ class MainActivity : AppCompatActivity() {
         (findViewById<Button>(R.id.retrofit)).setOnClickListener {
             startActivity(Intent(this@MainActivity, RetrofitService::class.java))
         }
+        (findViewById<Button>(R.id.permission)).setOnClickListener {
+            startActivity(Intent(this@MainActivity, PermissionActivity::class.java))
+        }
     }
 }
 
