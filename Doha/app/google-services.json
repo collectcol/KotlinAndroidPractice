@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "358654803455",
+    "project_id": "doha-3c08c",
+    "storage_bucket": "doha-3c08c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:358654803455:android:38140d03dbdb4e1f427bca",
+        "android_client_info": {
+          "package_name": "com.my.doha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "358654803455-9r6eccq9c9l9e9v3mmefhl5l564kea1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASn6b1O5Lqvx3d6zuOoCLnCwfsh18PY4Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "358654803455-9r6eccq9c9l9e9v3mmefhl5l564kea1p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
