@@ -1,6 +1,5 @@
 package com.my.doha
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,7 +7,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -17,87 +15,91 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
+import com.my.doha.data.UserData
+import kotlinx.coroutines.*
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var auth: FirebaseAuth
-    private lateinit var edit_input_email: EditText
-    private lateinit var edit_input_password: EditText
-    private lateinit var btn_login: Button
-    private lateinit var btn_google_login: SignInButton
-    private lateinit var gso: GoogleSignInOptions
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var mFirestore: FirebaseFirestore
+    private lateinit var mEmailEditText: EditText
+    private lateinit var mPasswordEditText: EditText
+    private lateinit var mLoginButton: Button
+    private lateinit var mGoogleLoginButton: SignInButton
+    private lateinit var mGSO: GoogleSignInOptions
+    private lateinit var mDohaAppContext: DohaApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        auth = FirebaseAuth.getInstance()
-        edit_input_email = findViewById(R.id.edt_input_email)
-        edit_input_password = findViewById(R.id.edt_input_password)
-        btn_login = findViewById<Button?>(R.id.btn_login).apply {
+        mDohaAppContext = applicationContext as DohaApp
+
+        mAuth = FirebaseAuth.getInstance()
+        mFirestore = FirebaseFirestore.getInstance()
+        mEmailEditText = findViewById(R.id.edt_input_email)
+        mPasswordEditText = findViewById(R.id.edt_input_password)
+        mLoginButton = findViewById<Button>(R.id.btn_login).apply {
             setOnClickListener {
-                sinUp()
+                signUp()
             }
         }
 
-
-        gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.gcm_defaultSenderId))
+        mGSO = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-        var googleSignInClient = GoogleSignIn.getClient(this, gso)
+        val googleSignInClient = GoogleSignIn.getClient(this, mGSO)
 
-        btn_google_login = findViewById<SignInButton>(R.id.btn_google_login).apply {
+        mGoogleLoginButton = findViewById<SignInButton>(R.id.btn_google_login).apply {
             setOnClickListener {
                 googleLogin(googleSignInClient)
             }
         }
     }
 
-    private fun sinUp() {
-        auth?.createUserWithEmailAndPassword(
-            edit_input_email.text.toString(),
-            edit_input_password.text.toString()
-        )
-            ?.addOnCompleteListener {//통신 완료가 된 후 무슨일을 할지
-                if (it.isSuccessful) {
-                    //정상적으로 이메일과 비번이 전달되어
-                    //새 유저 계정을 생성과 서버db 저장 완료 및 로그인
-                    //즉, 기존에 있는 계정이 아니다!
-                    finish()
-                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                } else if (!it.exception?.message.isNullOrEmpty()) {
-                    //예외메세지가 있다면 출력
-                    //에러가 났다거나 서버가 연결이 실패했다거나
-                    Toast.makeText(this, it.exception?.message, Toast.LENGTH_LONG).show()
+    private fun signUp() {
+        val email = mEmailEditText.text.toString()
+        val password = mPasswordEditText.text.toString()
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "이메일과 비밀번호를 입력해주세요", Toast.LENGTH_LONG).show()
+            return
+        }
+        mAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    mAuth.currentUser?.let { user ->
+                        saveUserToFirestoreAndLocal(user)
+                    }
                 } else {
-                    //여기가 실행되는 경우는 이미 db에 해당 이메일과 패스워드가 있는 경우
-                    //그래서 계정 생성이 아닌 로그인 함수로 이동
-                    signIn()
+                    task.exception?.message?.let {
+                        Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                    } ?: run {
+                        signIn()
+                    }
                 }
             }
     }
 
     private fun signIn() {
-        auth?.signInWithEmailAndPassword(
-            edit_input_email.text.toString(),
-            edit_input_password.text.toString()
-        )
-            ?.addOnCompleteListener {
-                if (it.isSuccessful) {
-                    // 로그인 처리
+        val email = mEmailEditText.text.toString()
+        val password = mPasswordEditText.text.toString()
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "이메일과 비밀번호를 입력해주세요", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        mAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    finish()
                 } else {
-                    Toast.makeText(this, it.exception?.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
                 }
             }
-    }
-
-    private fun googleLogin(googleSignInClient: GoogleSignInClient) {
-        val signInIntent = googleSignInClient?.signInIntent
-        if (signInIntent != null) {
-            googleSignInLauncher.launch(signInIntent)
-        }
     }
 
     private val googleSignInLauncher = registerForActivityResult(
@@ -107,8 +109,13 @@ class LoginActivity : AppCompatActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             handleSignInResult(task)
         } else {
-            Toast.makeText(this, "Google Sign-In failed", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "구글 로그인 실패", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun googleLogin(googleSignInClient: GoogleSignInClient) {
+        val signInIntent = googleSignInClient.signInIntent
+        googleSignInLauncher.launch(signInIntent)
     }
 
     private fun handleSignInResult(task: Task<GoogleSignInAccount>) {
@@ -118,43 +125,113 @@ class LoginActivity : AppCompatActivity() {
                 firebaseAuthWithGoogle(account)
             }
         } catch (e: ApiException) {
-            Toast.makeText(this, "Google Sign-In failed: ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "구글 로그인 실패: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == 1004) {
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                //결과 Intent(data 매개변수) 에서 구글로그인 결과 꺼내오기
-//                val result = data?.let { Auth.GoogleSignInApi.getSignInResultFromIntent(it) }!!
-//
-//                //정상적으로 로그인되었다면
-//                if(result.isSuccess){
-//                    //우리의 Firebase 서버에 사용자 이메일정보보내기
-//                    val account = result.signInAccount
-//                    firebaseAuthWithGoogle(account)
-//                }
-//            }
-//        }
-//    }
-
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
-        //구글로부터 로그인된 사용자의 정보(Credentail)을 얻어온다.
         val credential = GoogleAuthProvider.getCredential(account?.idToken!!, null)
-        //그 정보를 사용하여 Firebase의 auth를 실행한다.
-        auth?.signInWithCredential(credential)
-            ?.addOnCompleteListener {  //통신 완료가 된 후 무슨일을 할지
-                    task ->
+        mAuth.signInWithCredential(credential)
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // 로그인 처리를 해주면 됨!
-//                    goMainActivity(task.result?.user)
-                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    mAuth.currentUser?.let { user ->
+                        saveUserToFirestoreAndLocal(user)
+                    }
                 } else {
-                    // 오류가 난 경우!
                     Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
                 }
-//                progressBar.visibility = View.GONE
             }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mAuth.currentUser?.let { user ->
+            loadUserData(user)
+        }
+    }
+
+    private fun loadUserData(user: FirebaseUser) {
+        val db = DatabaseProvider.getDatabase(mDohaAppContext)
+
+        CoroutineScope(Dispatchers.IO).launch {
+//            db.userDataDao().deleteUserDataById(user.uid)
+            val userData = db.userDataDao().getUserData(user.uid)
+            if (userData != null) {
+                withContext(Dispatchers.Main) {
+                    moveMainPage(user)
+                }
+            } else {
+                mFirestore.collection("users").document(user.uid)
+                    .get()
+                    .addOnSuccessListener { document ->
+                        document?.toObject(UserData::class.java)?.let { userData ->
+                            CoroutineScope(Dispatchers.IO).launch {
+                                db.userDataDao().insertUserData(userData)
+                                withContext(Dispatchers.Main) {
+                                    moveMainPage(user)
+                                }
+                            }
+                        } ?: run {
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "No such document",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Firestore 데이터 가져오기 실패: ${e.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+            }
+        }
+    }
+
+    private fun saveUserToFirestoreAndLocal(user: FirebaseUser) {
+        val userData = UserData(user.uid, user.email, user.displayName)
+        mFirestore.collection("users").document(user.uid)
+            .set(userData)
+            .addOnSuccessListener {
+                val db = DatabaseProvider.getDatabase(mDohaAppContext)
+                CoroutineScope(Dispatchers.IO).launch {
+                    db.userDataDao().insertUserData(userData)
+                    withContext(Dispatchers.Main) {
+                        moveMainPage(user)
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "사용자 정보 저장 실패: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+    }
+
+    private fun moveMainPage(user: FirebaseUser) {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
+    private fun syncUserData(user: FirebaseUser) {
+        val db = DatabaseProvider.getDatabase(mDohaAppContext)
+        CoroutineScope(Dispatchers.IO).launch {
+            val localUserData = db.userDataDao().getUserData(user.uid)
+            mFirestore.collection("users").document(user.uid).get()
+                .addOnSuccessListener { document ->
+                    document?.toObject(UserData::class.java)?.let { remoteUserData ->
+                        if (localUserData == null || localUserData != remoteUserData) {
+                            db.userDataDao().insertUserData(remoteUserData)
+                        }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "데이터 동기화 실패: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+        }
     }
 }
