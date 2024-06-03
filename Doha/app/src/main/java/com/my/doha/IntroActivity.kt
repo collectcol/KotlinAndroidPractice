@@ -17,6 +17,8 @@ class IntroActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
 
+        supportActionBar?.hide()
+
         val mainLogo = findViewById<ImageView>(R.id.intro_logo)
 
         applyFadeInOutAnimation(mainLogo)

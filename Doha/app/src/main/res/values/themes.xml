@@ -1,12 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Doha" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.Doha" parent="Theme.AppCompat.Light">
+        <!-- StatusBar -->
         <item name="android:statusBarColor">@color/statusBarColor</item>
-        <item name="android:textColor">@color/textColor</item>
         <!-- Optional: set light status bar icons if using a light status bar color -->
         <item name="android:windowLightStatusBar">true</item>
+<!--        &lt;!&ndash; Primary brand color. &ndash;&gt;-->
+<!--        <item name="colorPrimary">#FF0000</item>-->
+<!--        <item name="colorPrimaryVariant">#FFFF99</item>-->
+<!--        <item name="colorOnPrimary">@color/white</item>-->
+<!--        &lt;!&ndash; Secondary brand color. &ndash;&gt;-->
+<!--        <item name="colorSecondary">#00FF00</item>-->
+<!--        <item name="colorSecondaryVariant">#F999F0</item>-->
+<!--        <item name="colorOnSecondary">@color/black</item>-->
     </style>
 
     <style name="Theme.Doha" parent="Base.Theme.Doha" />

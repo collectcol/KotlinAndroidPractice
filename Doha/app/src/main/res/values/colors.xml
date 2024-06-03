@@ -2,8 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-<!--    thema   -->
+    <!--    thema   -->
+
+    <!--    로그인화면-->
     <color name="statusBarColor">#FFEB3B</color>
+
+    <!--    메인화면-->
+    <color name="bottomNavigationColor">#2180F3</color>
+
     <color name="appBackGroundColor1">#075CF1</color>
     <color name="appBackGroundColor2">#FF9800</color>
     <color name="appBackGroundColor2_Line">#F6BE15</color>

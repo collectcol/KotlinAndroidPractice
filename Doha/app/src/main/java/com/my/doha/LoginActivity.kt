@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -30,10 +31,13 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var mGoogleLoginButton: SignInButton
     private lateinit var mGSO: GoogleSignInOptions
     private lateinit var mDohaAppContext: DohaApp
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        supportActionBar?.hide()
 
         mDohaAppContext = applicationContext as DohaApp
 
@@ -41,6 +45,8 @@ class LoginActivity : AppCompatActivity() {
         mFirestore = FirebaseFirestore.getInstance()
         mEmailEditText = findViewById(R.id.edt_input_email)
         mPasswordEditText = findViewById(R.id.edt_input_password)
+        progressBar = findViewById(R.id.progress_bar)
+
         mLoginButton = findViewById<Button>(R.id.btn_login).apply {
             setOnClickListener {
                 signUp()
@@ -67,8 +73,10 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(this, "이메일과 비밀번호를 입력해주세요", Toast.LENGTH_LONG).show()
             return
         }
+        showProgressBar()
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
+                hideProgressBar()
                 if (task.isSuccessful) {
                     mAuth.currentUser?.let { user ->
                         saveUserToFirestoreAndLocal(user)
@@ -91,8 +99,10 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
+        showProgressBar()
         mAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
+                hideProgressBar()
                 if (task.isSuccessful) {
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     finish()
@@ -109,11 +119,13 @@ class LoginActivity : AppCompatActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             handleSignInResult(task)
         } else {
+            hideProgressBar()
             Toast.makeText(this, "구글 로그인 실패", Toast.LENGTH_LONG).show()
         }
     }
 
     private fun googleLogin(googleSignInClient: GoogleSignInClient) {
+        showProgressBar()
         val signInIntent = googleSignInClient.signInIntent
         googleSignInLauncher.launch(signInIntent)
     }
@@ -125,6 +137,7 @@ class LoginActivity : AppCompatActivity() {
                 firebaseAuthWithGoogle(account)
             }
         } catch (e: ApiException) {
+            hideProgressBar()
             Toast.makeText(this, "구글 로그인 실패: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
@@ -133,6 +146,7 @@ class LoginActivity : AppCompatActivity() {
         val credential = GoogleAuthProvider.getCredential(account?.idToken!!, null)
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
+                hideProgressBar()
                 if (task.isSuccessful) {
                     mAuth.currentUser?.let { user ->
                         saveUserToFirestoreAndLocal(user)
@@ -154,8 +168,7 @@ class LoginActivity : AppCompatActivity() {
         val db = DatabaseProvider.getDatabase(mDohaAppContext)
 
         CoroutineScope(Dispatchers.IO).launch {
-//            db.userDataDao().deleteUserDataById(user.uid)
-            val userData = db.userDataDao().getUserData(user.uid)
+            val userData = db.userDataDao().getUserDataById(user.uid)
             if (userData != null) {
                 withContext(Dispatchers.Main) {
                     moveMainPage(user)
@@ -216,22 +229,34 @@ class LoginActivity : AppCompatActivity() {
     private fun syncUserData(user: FirebaseUser) {
         val db = DatabaseProvider.getDatabase(mDohaAppContext)
         CoroutineScope(Dispatchers.IO).launch {
-            val localUserData = db.userDataDao().getUserData(user.uid)
+            val localUserData = db.userDataDao().getUserDataById(user.uid)
             mFirestore.collection("users").document(user.uid).get()
                 .addOnSuccessListener { document ->
                     document?.toObject(UserData::class.java)?.let { remoteUserData ->
                         if (localUserData == null || localUserData != remoteUserData) {
-                            db.userDataDao().insertUserData(remoteUserData)
+                            CoroutineScope(Dispatchers.IO).launch {
+                                db.userDataDao().insertUserData(remoteUserData)
+                            }
                         }
                     }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "데이터 동기화 실패: ${e.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "데이터 동기화 실패: ${e.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
         }
+    }
+
+    private fun showProgressBar() {
+        progressBar.visibility = ProgressBar.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        progressBar.visibility = ProgressBar.GONE
     }
 }
