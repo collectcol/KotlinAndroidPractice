@@ -3,22 +3,22 @@
     <item
         android:id="@+id/bottom_navigation_schedule"
         android:icon="@drawable/schedule_icon"
-        android:title="일정"/>
+        android:title="@string/bottomNavigation_first"/>
     <item
         android:id="@+id/bottom_navigation_account_book"
         android:icon="@drawable/account_book_icon"
-        android:title="가계부"/>
+        android:title="@string/bottomNavigation_second"/>
     <item
         android:id="@+id/bottom_navigation_note"
         android:icon="@drawable/note_icon"
-        android:title="메모"/>
+        android:title="@string/bottomNavigation_third"/>
     <item
         android:id="@+id/bottom_navigation_practice"
         android:icon="@drawable/practice_icon"
-        android:title="습관"/>
+        android:title="@string/bottomNavigation_force"/>
     <item
         android:id="@+id/bottom_navigation_diary"
         android:icon="@drawable/diary_icon"
-        android:title="일기"/>
+        android:title="@string/bottomNavigation_fifth"/>
 
 </menu>
