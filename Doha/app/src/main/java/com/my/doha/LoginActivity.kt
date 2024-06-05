@@ -19,12 +19,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.my.doha.base.BaseActivity
 import com.my.doha.data.UserData
 import kotlinx.coroutines.*
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var mAuth: FirebaseAuth
-    private lateinit var mFirestore: FirebaseFirestore
+class LoginActivity : BaseActivity() {
     private lateinit var mEmailEditText: EditText
     private lateinit var mPasswordEditText: EditText
     private lateinit var mLoginButton: Button
@@ -37,12 +36,10 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        supportActionBar?.hide()
+//        supportActionBar?.hide()
 
         mDohaAppContext = applicationContext as DohaApp
 
-        mAuth = FirebaseAuth.getInstance()
-        mFirestore = FirebaseFirestore.getInstance()
         mEmailEditText = findViewById(R.id.edt_input_email)
         mPasswordEditText = findViewById(R.id.edt_input_password)
         progressBar = findViewById(R.id.progress_bar)
@@ -74,11 +71,11 @@ class LoginActivity : AppCompatActivity() {
             return
         }
         showProgressBar()
-        mAuth.createUserWithEmailAndPassword(email, password)
+        mDohaAppContext.mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 hideProgressBar()
                 if (task.isSuccessful) {
-                    mAuth.currentUser?.let { user ->
+                    mDohaAppContext.mAuth.currentUser?.let { user ->
                         saveUserToFirestoreAndLocal(user)
                     }
                 } else {
@@ -100,7 +97,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         showProgressBar()
-        mAuth.signInWithEmailAndPassword(email, password)
+        mDohaAppContext.mAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 hideProgressBar()
                 if (task.isSuccessful) {
@@ -144,11 +141,11 @@ class LoginActivity : AppCompatActivity() {
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
         val credential = GoogleAuthProvider.getCredential(account?.idToken!!, null)
-        mAuth.signInWithCredential(credential)
+        mDohaAppContext.mAuth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 hideProgressBar()
                 if (task.isSuccessful) {
-                    mAuth.currentUser?.let { user ->
+                    mDohaAppContext.mAuth.currentUser?.let { user ->
                         saveUserToFirestoreAndLocal(user)
                     }
                 } else {
@@ -157,55 +154,55 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-    override fun onStart() {
-        super.onStart()
-        mAuth.currentUser?.let { user ->
-            loadUserData(user)
-        }
-    }
-
-    private fun loadUserData(user: FirebaseUser) {
-        val db = DatabaseProvider.getDatabase(mDohaAppContext)
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val userData = db.userDataDao().getUserDataById(user.uid)
-            if (userData != null) {
-                withContext(Dispatchers.Main) {
-                    moveMainPage(user)
-                }
-            } else {
-                mFirestore.collection("users").document(user.uid)
-                    .get()
-                    .addOnSuccessListener { document ->
-                        document?.toObject(UserData::class.java)?.let { userData ->
-                            CoroutineScope(Dispatchers.IO).launch {
-                                db.userDataDao().insertUserData(userData)
-                                withContext(Dispatchers.Main) {
-                                    moveMainPage(user)
-                                }
-                            }
-                        } ?: run {
-                            Toast.makeText(
-                                this@LoginActivity,
-                                "No such document",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Firestore 데이터 가져오기 실패: ${e.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-            }
-        }
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        mDohaAppContext.mAuth.currentUser?.let { user ->
+//            loadUserData(user)
+//        }
+//    }
+//
+//    private fun loadUserData(user: FirebaseUser) {
+//        val db = DatabaseProvider.getDatabase(mDohaAppContext)
+//
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val userData = db.userDataDao().getUserDataById(user.uid)
+//            if (userData != null) {
+//                withContext(Dispatchers.Main) {
+//                    moveMainPage(user)
+//                }
+//            } else {
+//                mDohaAppContext.mFirestore.collection("users").document(user.uid)
+//                    .get()
+//                    .addOnSuccessListener { document ->
+//                        document?.toObject(UserData::class.java)?.let { userData ->
+//                            CoroutineScope(Dispatchers.IO).launch {
+//                                db.userDataDao().insertUserData(userData)
+//                                withContext(Dispatchers.Main) {
+//                                    moveMainPage(user)
+//                                }
+//                            }
+//                        } ?: run {
+//                            Toast.makeText(
+//                                this@LoginActivity,
+//                                "No such document",
+//                                Toast.LENGTH_LONG
+//                            ).show()
+//                        }
+//                    }
+//                    .addOnFailureListener { e ->
+//                        Toast.makeText(
+//                            this@LoginActivity,
+//                            "Firestore 데이터 가져오기 실패: ${e.message}",
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                    }
+//            }
+//        }
+//    }
 
     private fun saveUserToFirestoreAndLocal(user: FirebaseUser) {
         val userData = UserData(user.uid, user.email, user.displayName)
-        mFirestore.collection("users").document(user.uid)
+        mDohaAppContext.mFirestore.collection("users").document(user.uid)
             .set(userData)
             .addOnSuccessListener {
                 val db = DatabaseProvider.getDatabase(mDohaAppContext)
@@ -230,7 +227,7 @@ class LoginActivity : AppCompatActivity() {
         val db = DatabaseProvider.getDatabase(mDohaAppContext)
         CoroutineScope(Dispatchers.IO).launch {
             val localUserData = db.userDataDao().getUserDataById(user.uid)
-            mFirestore.collection("users").document(user.uid).get()
+            mDohaAppContext.mFirestore.collection("users").document(user.uid).get()
                 .addOnSuccessListener { document ->
                     document?.toObject(UserData::class.java)?.let { remoteUserData ->
                         if (localUserData == null || localUserData != remoteUserData) {

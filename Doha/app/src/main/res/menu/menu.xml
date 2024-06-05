@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/bottom_navigation_main"
-        android:title="메인"/>
-    <item
-        android:id="@+id/bottom_navigation_diary"
-        android:title="일기"/>
-    <item
-        android:id="@+id/bottom_navigation_memo"
-        android:title="메모"/>
+        android:id="@+id/bottom_navigation_schedule"
+        android:icon="@drawable/schedule_icon"
+        android:title="일정"/>
     <item
         android:id="@+id/bottom_navigation_account_book"
+        android:icon="@drawable/account_book_icon"
         android:title="가계부"/>
     <item
-        android:id="@+id/bottom_navigation_schedule"
-        android:title="일정"/>
+        android:id="@+id/bottom_navigation_note"
+        android:icon="@drawable/note_icon"
+        android:title="메모"/>
+    <item
+        android:id="@+id/bottom_navigation_practice"
+        android:icon="@drawable/practice_icon"
+        android:title="습관"/>
+    <item
+        android:id="@+id/bottom_navigation_diary"
+        android:icon="@drawable/diary_icon"
+        android:title="일기"/>
 
 </menu>
