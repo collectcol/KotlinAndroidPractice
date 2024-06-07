@@ -6,4 +6,7 @@
     <string name="bottomNavigation_third">메모</string>
     <string name="bottomNavigation_force">습관</string>
     <string name="bottomNavigation_fifth">일기</string>
+    <!--    메인화면 DrawerLayout   -->
+    <string name="navigation_drawer_open">열기</string>
+    <string name="navigation_drawer_close">닫기</string>
 </resources>
