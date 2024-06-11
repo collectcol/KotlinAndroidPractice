@@ -13,12 +13,13 @@
         android:icon="@drawable/note_icon"
         android:title="@string/bottomNavigation_third"/>
     <item
-        android:id="@+id/bottom_navigation_practice"
-        android:icon="@drawable/practice_icon"
-        android:title="@string/bottomNavigation_force"/>
-    <item
         android:id="@+id/bottom_navigation_diary"
         android:icon="@drawable/diary_icon"
         android:title="@string/bottomNavigation_fifth"/>
+    <item
+        android:id="@+id/bottom_navigation_practice"
+        android:icon="@drawable/practice_icon"
+        android:title="@string/bottomNavigation_force"/>
+
 
 </menu>

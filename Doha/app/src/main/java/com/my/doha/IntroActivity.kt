@@ -12,6 +12,8 @@ import android.widget.ImageView
 import com.google.firebase.auth.FirebaseUser
 import com.my.doha.base.BaseActivity
 import com.my.doha.data.UserData
+import com.my.doha.database.AppDatabase
+import com.my.doha.database.DatabaseProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,7 +58,7 @@ class IntroActivity : BaseActivity() {
             interpolator = AccelerateDecelerateInterpolator()
             start()
 
-            addListener(object : AnimatorListenerAdapter(){
+            addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
                     mDohaAppContext.mAuth.currentUser?.let { user ->
                         loadUserData(user)
@@ -68,11 +70,12 @@ class IntroActivity : BaseActivity() {
             })
         }
     }
+
     private fun loadUserData(user: FirebaseUser) {
-        val db = DatabaseProvider.getDatabase(mDohaAppContext)
+//        val db = DatabaseProvider.getDatabase(mDohaAppContext)
 
         CoroutineScope(Dispatchers.IO).launch {
-            val userData = db.userDataDao().getUserDataById(user.uid)
+            val userData = mDohaAppContext.mDB.userDataDao().getUserDataById(user.uid)
             if (userData != null) {
                 withContext(Dispatchers.Main) {
                     movePage(MAIN)
@@ -83,7 +86,7 @@ class IntroActivity : BaseActivity() {
                     .addOnSuccessListener { document ->
                         document?.toObject(UserData::class.java)?.let { userData ->
                             CoroutineScope(Dispatchers.IO).launch {
-                                db.userDataDao().insertUserData(userData)
+                                mDohaAppContext.mDB.userDataDao().insertUserData(userData)
                                 withContext(Dispatchers.Main) {
                                     movePage(MAIN)
                                 }

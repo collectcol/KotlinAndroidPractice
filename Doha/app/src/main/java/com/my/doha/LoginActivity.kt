@@ -21,6 +21,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.my.doha.base.BaseActivity
 import com.my.doha.data.UserData
+import com.my.doha.database.AppDatabase
 import kotlinx.coroutines.*
 
 class LoginActivity : BaseActivity() {
@@ -35,8 +36,6 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-//        supportActionBar?.hide()
 
         mDohaAppContext = applicationContext as DohaApp
 
@@ -205,9 +204,8 @@ class LoginActivity : BaseActivity() {
         mDohaAppContext.mFirestore.collection("users").document(user.uid)
             .set(userData)
             .addOnSuccessListener {
-                val db = DatabaseProvider.getDatabase(mDohaAppContext)
                 CoroutineScope(Dispatchers.IO).launch {
-                    db.userDataDao().insertUserData(userData)
+                    mDohaAppContext.mDB.userDataDao().insertUserData(userData)
                     withContext(Dispatchers.Main) {
                         moveMainPage(user)
                     }
@@ -224,15 +222,14 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun syncUserData(user: FirebaseUser) {
-        val db = DatabaseProvider.getDatabase(mDohaAppContext)
         CoroutineScope(Dispatchers.IO).launch {
-            val localUserData = db.userDataDao().getUserDataById(user.uid)
+            val localUserData = mDohaAppContext.mDB.userDataDao().getUserDataById(user.uid)
             mDohaAppContext.mFirestore.collection("users").document(user.uid).get()
                 .addOnSuccessListener { document ->
                     document?.toObject(UserData::class.java)?.let { remoteUserData ->
                         if (localUserData == null || localUserData != remoteUserData) {
                             CoroutineScope(Dispatchers.IO).launch {
-                                db.userDataDao().insertUserData(remoteUserData)
+                                mDohaAppContext.mDB.userDataDao().insertUserData(remoteUserData)
                             }
                         }
                     }

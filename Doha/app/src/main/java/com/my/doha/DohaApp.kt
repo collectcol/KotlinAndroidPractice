@@ -7,10 +7,14 @@ import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.my.doha.database.AppDatabase
+import com.my.doha.database.DatabaseProvider
+import java.util.Calendar
 
 class DohaApp : Application(){
     lateinit var mAuth: FirebaseAuth
     lateinit var mFirestore: FirebaseFirestore
+    lateinit var mDB: AppDatabase
+    lateinit var mCalendar: Calendar
 
     companion object {
         private var instance: DohaApp? = null
@@ -27,19 +31,8 @@ class DohaApp : Application(){
 
         mAuth = FirebaseAuth.getInstance()
         mFirestore = FirebaseFirestore.getInstance()
+        mDB = DatabaseProvider.getDatabase(this)
+        mCalendar = Calendar(Calendar.YEAR, Calendar.)
     }
 }
 
-object DatabaseProvider {
-    private var db: AppDatabase? = null
-
-    fun getDatabase(context: Context): AppDatabase {
-        if (db == null) {
-            db = Room.databaseBuilder(
-                context.applicationContext,
-                AppDatabase::class.java, "app_database"
-            ).build()
-        }
-        return db!!
-    }
-}

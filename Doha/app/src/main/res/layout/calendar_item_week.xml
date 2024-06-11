@@ -9,6 +9,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="textView_week"/>
+        android:id="@+id/textView_week"
+        android:text="요일"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

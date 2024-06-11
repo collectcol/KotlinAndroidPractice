@@ -1,6 +1,7 @@
 package com.my.doha
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.LinearLayout
@@ -16,7 +17,7 @@ import com.my.doha.base.BaseActivity
 import java.time.DayOfWeek
 import java.util.Calendar
 
-class MainActivity : BaseActivity(), View.OnClickListener, CalendarAdapter.ItemClickListener {
+class MainActivity : BaseActivity(){
     private lateinit var mDrawerLayout: DrawerLayout
     private lateinit var mNavigationView: NavigationView
     private lateinit var mToolbar: Toolbar
@@ -26,13 +27,9 @@ class MainActivity : BaseActivity(), View.OnClickListener, CalendarAdapter.ItemC
 
 //    private lateinit var mTextViewMonth: TextView
 
-    // 컬린더뷰 어댑터
-    private lateinit var mCalendarAdapter: CalendarAdapter
-    private lateinit var mWeekAdapter: WeekAdapter
-
     // 요일 리스트
-    private lateinit var mDayList: ArrayList<Day>
-    private lateinit var mWeekList: ArrayList<String>
+    private lateinit var mWeekList: MutableList<String>
+    private lateinit var mDayList: MutableList<String>
 
     // 그리드뷰
     private lateinit var mRecyclerViewDayList: RecyclerView
@@ -55,8 +52,10 @@ class MainActivity : BaseActivity(), View.OnClickListener, CalendarAdapter.ItemC
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initWeekList()
+        initDayList()
+
         mDohaAppContext = applicationContext as DohaApp
-//        mTextViewMonth = findViewById(R.layout.textview)
 
         mDrawerLayout = findViewById(R.id.drawer_layout)
         mNavigationView = findViewById(R.id.navigation_view)
@@ -65,13 +64,13 @@ class MainActivity : BaseActivity(), View.OnClickListener, CalendarAdapter.ItemC
         mRecyclerViewWeekList = findViewById<RecyclerView?>(R.id.recyclerView_weeklist).apply {
             this.layoutManager = GridLayoutManager(this@MainActivity, 7)
             this.setItemViewCacheSize(7)
+            this.adapter = RecyclerViewWeekListAdapter(mWeekList, LayoutInflater.from(this@MainActivity))
         }
         mRecyclerViewDayList = findViewById<RecyclerView?>(R.id.recyclerView_daylist).apply {
             this.layoutManager = GridLayoutManager(this@MainActivity, 7)
-            this.setItemViewCacheSize(42)
+            this.setItemViewCacheSize(45)
+            this.adapter = RecyclerViewDayListAdapter(mDayList, LayoutInflater.from(this@MainActivity))
         }
-        setWeekListBar()
-        setDayListView(getDayList(savedInstanceState))
         mFragmentContainer = findViewById(R.id.fragment_container)
 
         setSupportActionBar(mToolbar)
@@ -159,70 +158,20 @@ class MainActivity : BaseActivity(), View.OnClickListener, CalendarAdapter.ItemC
         mFragmentContainer.setOnTouchListener(ResizeTouchListener())
     }
 
-    private fun getDayList(savedInstanceState: Bundle): Calendar {
-        mCalendar = Calendar.getInstance()
-        if (savedInstanceState != null) {
-            mCalendar.set(
-                savedInstanceState.getInt(YEAR), savedInstanceState.getInt(MONTH), 1
-            )
-        } else {
-            mCalendar.set(Calendar.DAY_OF_MONTH, 1)
-        }
-        return mCalendar
+    private fun initWeekList(){
+        mWeekList = mutableListOf()
+        mWeekList.add("일")
+        mWeekList.add("월")
+        mWeekList.add("화")
+        mWeekList.add("수")
+        mWeekList.add("목")
+        mWeekList.add("금")
+        mWeekList.add("토")
     }
 
-    override fun onResume() {
-        super.onResume()
-        mCalendar.set(Calendar.DAY_OF_MONTH, 1)
-        setDayListView(mCalendar)
-    }
-
-    private fun setWeekListBar() {
-        mDayList = ArrayList<String>().apply {
-            add("일")
-            add("월")
-            add("화")
-            add("수")
-            add("목")
-            add("금")
-            add("토")
-        }
-        mWeekAdapter = WeekAdapter(this, mDayList)
-        mRecyclerViewWeekList.adapter = mWeekAdapter
-
-        mDayList = ArrayList<Day>()
-    }
-
-    private fun setDayListView(calendar: Calendar){
-
-        var dayOfMonth = calendar.get(Calendar.DAY_OF_WEEK)
-        var thisMonthLastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-        var lastMonthStartDay = calendar.add(Calendar.MONTH, -1).let {
-            calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-        }
-
-        lastMonthStartDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-        lastMonthStartDay -= calendar.add(Calendar.MONTH, 1).let{
-            dayOfMonth - 1 - 1
-        }
-
-        mToolbar.title = (calendar.get(Calendar.MONTH) + 1).toString()
-
-        mDayList.clear()
-        var day: Day
-        for (i in 0 until dayOfMonth - 1) {
-            var date = lastMonthStartDay + i
-            day = Day()
-            day.setDay(date)
-            day.setInMonth(false)
-
-            mDayList.add(day)
-        }
-
-        for (i in 1 until 35 - (thisMonthLastDay + dayOfMonth) + 1) {
-            day = Day()
-            day.setDay(i)
-        }
+    private fun initDayList() {
+        mDayList = mutableListOf()
+        mDayList.add("테스트")
     }
 
     override fun onBackPressed() {
@@ -267,9 +216,5 @@ class MainActivity : BaseActivity(), View.OnClickListener, CalendarAdapter.ItemC
             }
             return true
         }
-    }
-
-    override fun onClick(p0: View?) {
-        TODO("Not yet implemented")
     }
 }
