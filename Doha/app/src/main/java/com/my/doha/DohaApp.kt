@@ -32,7 +32,7 @@ class DohaApp : Application(){
         mAuth = FirebaseAuth.getInstance()
         mFirestore = FirebaseFirestore.getInstance()
         mDB = DatabaseProvider.getDatabase(this)
-        mCalendar = Calendar(Calendar.YEAR, Calendar.)
+        mCalendar = Calendar.getInstance()
     }
 }
 

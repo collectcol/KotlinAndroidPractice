@@ -1,5 +1,6 @@
 package com.my.doha
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -30,14 +31,16 @@ class LoginActivity : BaseActivity() {
     private lateinit var mLoginButton: Button
     private lateinit var mGoogleLoginButton: SignInButton
     private lateinit var mGSO: GoogleSignInOptions
-    private lateinit var mDohaAppContext: DohaApp
+    private lateinit var mDohaAppContext: Context
+    private lateinit var mDohaAppInstance: DohaApp
     private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        mDohaAppContext = applicationContext as DohaApp
+        mDohaAppContext = DohaApp.applicationContext()
+        mDohaAppInstance = mDohaAppContext as DohaApp
 
         mEmailEditText = findViewById(R.id.edt_input_email)
         mPasswordEditText = findViewById(R.id.edt_input_password)
@@ -70,11 +73,11 @@ class LoginActivity : BaseActivity() {
             return
         }
         showProgressBar()
-        mDohaAppContext.mAuth.createUserWithEmailAndPassword(email, password)
+        mDohaAppInstance.mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 hideProgressBar()
                 if (task.isSuccessful) {
-                    mDohaAppContext.mAuth.currentUser?.let { user ->
+                    mDohaAppInstance.mAuth.currentUser?.let { user ->
                         saveUserToFirestoreAndLocal(user)
                     }
                 } else {
@@ -96,7 +99,7 @@ class LoginActivity : BaseActivity() {
         }
 
         showProgressBar()
-        mDohaAppContext.mAuth.signInWithEmailAndPassword(email, password)
+        mDohaAppInstance.mAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 hideProgressBar()
                 if (task.isSuccessful) {
@@ -140,11 +143,11 @@ class LoginActivity : BaseActivity() {
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
         val credential = GoogleAuthProvider.getCredential(account?.idToken!!, null)
-        mDohaAppContext.mAuth.signInWithCredential(credential)
+        mDohaAppInstance.mAuth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 hideProgressBar()
                 if (task.isSuccessful) {
-                    mDohaAppContext.mAuth.currentUser?.let { user ->
+                    mDohaAppInstance.mAuth.currentUser?.let { user ->
                         saveUserToFirestoreAndLocal(user)
                     }
                 } else {
@@ -201,11 +204,11 @@ class LoginActivity : BaseActivity() {
 
     private fun saveUserToFirestoreAndLocal(user: FirebaseUser) {
         val userData = UserData(user.uid, user.email, user.displayName)
-        mDohaAppContext.mFirestore.collection("users").document(user.uid)
+        mDohaAppInstance.mFirestore.collection("users").document(user.uid)
             .set(userData)
             .addOnSuccessListener {
                 CoroutineScope(Dispatchers.IO).launch {
-                    mDohaAppContext.mDB.userDataDao().insertUserData(userData)
+                    mDohaAppInstance.mDB.userDataDao().insertUserData(userData)
                     withContext(Dispatchers.Main) {
                         moveMainPage(user)
                     }
@@ -223,13 +226,13 @@ class LoginActivity : BaseActivity() {
 
     private fun syncUserData(user: FirebaseUser) {
         CoroutineScope(Dispatchers.IO).launch {
-            val localUserData = mDohaAppContext.mDB.userDataDao().getUserDataById(user.uid)
-            mDohaAppContext.mFirestore.collection("users").document(user.uid).get()
+            val localUserData = mDohaAppInstance.mDB.userDataDao().getUserDataById(user.uid)
+            mDohaAppInstance.mFirestore.collection("users").document(user.uid).get()
                 .addOnSuccessListener { document ->
                     document?.toObject(UserData::class.java)?.let { remoteUserData ->
                         if (localUserData == null || localUserData != remoteUserData) {
                             CoroutineScope(Dispatchers.IO).launch {
-                                mDohaAppContext.mDB.userDataDao().insertUserData(remoteUserData)
+                                mDohaAppInstance.mDB.userDataDao().insertUserData(remoteUserData)
                             }
                         }
                     }

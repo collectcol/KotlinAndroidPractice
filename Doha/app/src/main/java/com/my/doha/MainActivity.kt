@@ -1,5 +1,6 @@
 package com.my.doha
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -10,66 +11,39 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.my.doha.base.BaseActivity
-import java.time.DayOfWeek
-import java.util.Calendar
 
-class MainActivity : BaseActivity(){
+class MainActivity : BaseActivity() {
     private lateinit var mDrawerLayout: DrawerLayout
     private lateinit var mNavigationView: NavigationView
     private lateinit var mToolbar: Toolbar
     private lateinit var mBottomNavigation: BottomNavigationView
     private lateinit var mCalendarContainer: View
+    private lateinit var mCalendarCustom: RecyclerView
     private lateinit var mFragmentContainer: View
-
-//    private lateinit var mTextViewMonth: TextView
-
-    // 요일 리스트
-    private lateinit var mWeekList: MutableList<String>
-    private lateinit var mDayList: MutableList<String>
-
-    // 그리드뷰
-    private lateinit var mRecyclerViewDayList: RecyclerView
-    private lateinit var mRecyclerViewWeekList: RecyclerView
-
-    private lateinit var mCalendar: Calendar
-
-    private lateinit var mDohaAppContext: DohaApp
-
-    companion object {
-        var YEAR: String = "년"
-        var MONTH: String = "월"
-        var DAY: String = "일"
-
-        var TAG: String = "MainActivity"
-    }
-
+    private lateinit var mDohaAppContext: Context
+    private lateinit var mDohaAppInstance: DohaApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initWeekList()
-        initDayList()
-
-        mDohaAppContext = applicationContext as DohaApp
+        mDohaAppContext = DohaApp.applicationContext()
+        mDohaAppInstance = mDohaAppContext as DohaApp
 
         mDrawerLayout = findViewById(R.id.drawer_layout)
         mNavigationView = findViewById(R.id.navigation_view)
         mToolbar = findViewById(R.id.toolbar)
         mCalendarContainer = findViewById(R.id.calendar_container)
-        mRecyclerViewWeekList = findViewById<RecyclerView?>(R.id.recyclerView_weeklist).apply {
-            this.layoutManager = GridLayoutManager(this@MainActivity, 7)
-            this.setItemViewCacheSize(7)
-            this.adapter = RecyclerViewWeekListAdapter(mWeekList, LayoutInflater.from(this@MainActivity))
-        }
-        mRecyclerViewDayList = findViewById<RecyclerView?>(R.id.recyclerView_daylist).apply {
-            this.layoutManager = GridLayoutManager(this@MainActivity, 7)
-            this.setItemViewCacheSize(45)
-            this.adapter = RecyclerViewDayListAdapter(mDayList, LayoutInflater.from(this@MainActivity))
+        mCalendarCustom = findViewById<RecyclerView?>(R.id.calendar_custom).apply {
+            layoutManager =
+                LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = RecyclerViewAdapterMonth(LayoutInflater.from(this@MainActivity), mDohaAppInstance.mCalendar)
+            scrollToPosition(Int.MAX_VALUE / 2)
         }
         mFragmentContainer = findViewById(R.id.fragment_container)
 
@@ -156,22 +130,6 @@ class MainActivity : BaseActivity(){
         }
 
         mFragmentContainer.setOnTouchListener(ResizeTouchListener())
-    }
-
-    private fun initWeekList(){
-        mWeekList = mutableListOf()
-        mWeekList.add("일")
-        mWeekList.add("월")
-        mWeekList.add("화")
-        mWeekList.add("수")
-        mWeekList.add("목")
-        mWeekList.add("금")
-        mWeekList.add("토")
-    }
-
-    private fun initDayList() {
-        mDayList = mutableListOf()
-        mDayList.add("테스트")
     }
 
     override fun onBackPressed() {

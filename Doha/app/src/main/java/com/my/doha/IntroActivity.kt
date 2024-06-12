@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -20,7 +21,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class IntroActivity : BaseActivity() {
-    private lateinit var mDohaAppContext: DohaApp
+    private lateinit var mDohaAppContext: Context
+    private lateinit var mDohaAppInstance: DohaApp
     private val LOGIN = 0
     private val MAIN = 1
 
@@ -28,9 +30,8 @@ class IntroActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
 
-//        supportActionBar?.hide()
-
-        mDohaAppContext = applicationContext as DohaApp
+        mDohaAppContext = DohaApp.applicationContext()
+        mDohaAppInstance = mDohaAppContext as DohaApp
 
         val mainLogo = findViewById<ImageView>(R.id.intro_logo)
 
@@ -60,7 +61,7 @@ class IntroActivity : BaseActivity() {
 
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
-                    mDohaAppContext.mAuth.currentUser?.let { user ->
+                    mDohaAppInstance.mAuth.currentUser?.let { user ->
                         loadUserData(user)
                     } ?: run {
                         // 로그인 화면으로 이동
@@ -75,18 +76,18 @@ class IntroActivity : BaseActivity() {
 //        val db = DatabaseProvider.getDatabase(mDohaAppContext)
 
         CoroutineScope(Dispatchers.IO).launch {
-            val userData = mDohaAppContext.mDB.userDataDao().getUserDataById(user.uid)
+            val userData = mDohaAppInstance.mDB.userDataDao().getUserDataById(user.uid)
             if (userData != null) {
                 withContext(Dispatchers.Main) {
                     movePage(MAIN)
                 }
             } else {
-                mDohaAppContext.mFirestore.collection("users").document(user.uid)
+                mDohaAppInstance.mFirestore.collection("users").document(user.uid)
                     .get()
                     .addOnSuccessListener { document ->
                         document?.toObject(UserData::class.java)?.let { userData ->
                             CoroutineScope(Dispatchers.IO).launch {
-                                mDohaAppContext.mDB.userDataDao().insertUserData(userData)
+                                mDohaAppInstance.mDB.userDataDao().insertUserData(userData)
                                 withContext(Dispatchers.Main) {
                                     movePage(MAIN)
                                 }
