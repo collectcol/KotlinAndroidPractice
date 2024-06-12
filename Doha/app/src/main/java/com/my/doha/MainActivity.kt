@@ -42,7 +42,7 @@ class MainActivity : BaseActivity() {
         mCalendarCustom = findViewById<RecyclerView?>(R.id.calendar_custom).apply {
             layoutManager =
                 LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
-            adapter = RecyclerViewAdapterMonth(LayoutInflater.from(this@MainActivity), mDohaAppInstance.mCalendar)
+            adapter = RecyclerViewAdapterMonth(this@MainActivity, mDohaAppInstance.mCalendar)
             scrollToPosition(Int.MAX_VALUE / 2)
         }
         mFragmentContainer = findViewById(R.id.fragment_container)
@@ -89,35 +89,35 @@ class MainActivity : BaseActivity() {
                     R.id.bottom_navigation_schedule -> {
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, ScheduleFragment()).commit()
-                        supportActionBar!!.title = getString(R.string.bottomNavigation_first)
+//                        supportActionBar!!.title = getString(R.string.bottomNavigation_first)
                         true
                     }
 
                     R.id.bottom_navigation_account_book -> {
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, AccountBookFragment()).commit()
-                        supportActionBar!!.title = getString(R.string.bottomNavigation_second)
+//                        supportActionBar!!.title = getString(R.string.bottomNavigation_second)
                         true
                     }
 
                     R.id.bottom_navigation_note -> {
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, NoteFragment()).commit()
-                        supportActionBar!!.title = getString(R.string.bottomNavigation_third)
+//                        supportActionBar!!.title = getString(R.string.bottomNavigation_third)
                         true
                     }
 
                     R.id.bottom_navigation_practice -> {
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, PracticeFragment()).commit()
-                        supportActionBar!!.title = getString(R.string.bottomNavigation_force)
+//                        supportActionBar!!.title = getString(R.string.bottomNavigation_force)
                         true
                     }
 
                     R.id.bottom_navigation_diary -> {
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, DiaryFragment()).commit()
-                        supportActionBar!!.title = getString(R.string.bottomNavigation_fifth)
+//                        supportActionBar!!.title = getString(R.string.bottomNavigation_fifth)
                         true
                     }
 
@@ -129,7 +129,7 @@ class MainActivity : BaseActivity() {
             selectedItemId = R.id.bottom_navigation_schedule
         }
 
-        mFragmentContainer.setOnTouchListener(ResizeTouchListener())
+//        mFragmentContainer.setOnTouchListener(ResizeTouchListener())
     }
 
     override fun onBackPressed() {
@@ -140,39 +140,40 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private inner class ResizeTouchListener : View.OnTouchListener {
-        private var initialY = 0f
-        private var initialWeightFragment = 0f
-        private var initialWeightCalendar = 0f
-
-        override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-            when (event?.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    initialY = event.rawY
-                    initialWeightFragment =
-                        (mFragmentContainer.layoutParams as LinearLayout.LayoutParams).weight
-                    initialWeightCalendar =
-                        (mCalendarContainer.layoutParams as LinearLayout.LayoutParams).weight
-                }
-
-                MotionEvent.ACTION_MOVE -> {
-                    val deltaY = initialY - event.rawY
-                    val totalHeight = mCalendarContainer.height + mFragmentContainer.height
-                    val fragmentWeight = initialWeightFragment + deltaY / totalHeight
-                    val calendarWeight = initialWeightCalendar - deltaY / totalHeight
-
-                    if (fragmentWeight > 0 && calendarWeight > 0) {
-                        (mFragmentContainer.layoutParams as LinearLayout.LayoutParams).weight =
-                            fragmentWeight
-                        (mCalendarContainer.layoutParams as LinearLayout.LayoutParams).weight =
-                            calendarWeight
-
-                        mFragmentContainer.requestLayout()
-                        mCalendarContainer.requestLayout()
-                    }
-                }
-            }
-            return true
-        }
-    }
+//    private inner class ResizeTouchListener : View.OnTouchListener {
+//        private var initialY = 0f
+//        private var initialWeightFragment = 0f
+//        private var initialWeightCalendar = 0f
+//
+//        override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+//            when (event?.action) {
+//                MotionEvent.ACTION_DOWN -> {
+//                    initialY = event.rawY
+//                    initialWeightFragment =
+//                        (mFragmentContainer.layoutParams as LinearLayout.LayoutParams).weight
+//                    initialWeightCalendar =
+//                        (mCalendarContainer.layoutParams as LinearLayout.LayoutParams).weight
+//                }
+//
+//                MotionEvent.ACTION_MOVE -> {
+//                    val deltaY = initialY - event.rawY
+//                    val totalHeight = mCalendarContainer.height + mFragmentContainer.height
+//                    val fragmentWeight = initialWeightFragment + deltaY / totalHeight
+//                    val calendarWeight = initialWeightCalendar - deltaY / totalHeight
+//
+//                    val easedFragmentWeight = fragmentWeight.coerceIn(0.1f, 0.9f)
+//                    val easedCalendarWeight = calendarWeight.coerceIn(0.1f, 0.9f)
+//
+//                    if (easedFragmentWeight > 0 && easedCalendarWeight > 0) {
+//                        (mFragmentContainer.layoutParams as LinearLayout.LayoutParams).weight = easedFragmentWeight
+//                        (mCalendarContainer.layoutParams as LinearLayout.LayoutParams).weight = easedCalendarWeight
+//
+//                        mFragmentContainer.requestLayout()
+//                        mCalendarContainer.requestLayout()
+//                    }
+//                }
+//            }
+//            return true
+//        }
+//    }
 }
