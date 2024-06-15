@@ -2,6 +2,7 @@ package com.my.doha
 
 import android.app.Application
 import android.content.Context
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
@@ -18,6 +19,7 @@ class DohaApp : Application(){
 
     companion object {
         private var instance: DohaApp? = null
+        var actionBar: ActionBar? = null
 
         fun applicationContext() : Context {
             return instance!!.applicationContext

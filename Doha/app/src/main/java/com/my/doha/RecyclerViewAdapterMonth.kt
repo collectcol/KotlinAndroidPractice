@@ -14,7 +14,7 @@ class RecyclerViewAdapterMonth(
     var context: Context,
     var calendar: Calendar
 ) : RecyclerView.Adapter<RecyclerViewAdapterMonth.ViewHolder>() {
-    var center = Int.MAX_VALUE / 2
+    var center = 100
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var mTextViewMonth: TextView

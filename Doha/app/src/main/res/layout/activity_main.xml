@@ -15,7 +15,35 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="일정"
+                android:id="@+id/checkBox_schedule"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가계부"
+                android:id="@+id/checkBox_account_book"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="메모"
+                android:id="@+id/checkBox_note"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="일기"
+                android:id="@+id/checkBox_diary"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="습관"
+                android:id="@+id/checkBox_practice"/>
+        </androidx.appcompat.widget.Toolbar>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/calendar_container"
